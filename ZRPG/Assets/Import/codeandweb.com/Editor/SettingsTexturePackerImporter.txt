@@ -1,0 +1,18 @@
+version: 2
+importPivots: 1
+tpsheetFileNames:
+- Assets/codeandweb.com/Example/SpriteSheet/sprites.tpsheet
+- Assets/Textures/SpriteSheet/Dummy.tpsheet
+- Assets/Textures/SpriteSheet/Warrior/Attack.tpsheet
+- Assets/Textures/SpriteSheet/Warrior/Warrior.tpsheet
+textureFileNames:
+- Assets/codeandweb.com/Example/SpriteSheet/sprites.png
+- Assets/Textures/SpriteSheet/Dummy.png
+- Assets/Textures/SpriteSheet/Warrior/Attack.png
+- Assets/Textures/SpriteSheet/Warrior/Warrior.png
+normalmapFileNames:
+- Assets/codeandweb.com/Example/SpriteSheet/sprites_n.png
+- 
+- 
+- 
+enableDebugOutput: 0

@@ -9,9 +9,14 @@ public class Panel_ActorInfo : MonoBehaviour
     public Slider slider_HP;
     public Text text_HP;
 
+    int currentHp;
+
     public void Set(Actor actor)
     {
+
         //slider_HP.value = (float)actor.hpCurrent / actor.hpMax;
+        //如果是增加了最大生命值，将生命条先减少
+        //if(actor.hpCurrent)
         StopAllCoroutines();
         StartCoroutine(SetSliderValue((float)actor.hpCurrent / actor.hpMax));
 

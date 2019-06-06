@@ -37,18 +37,22 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             actor.abils[0].Cast(actor);
+
+            actor.animator.SetTrigger("Spell1");
         }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
             actor.abils[1].Cast(actor);
 
-            actor.animator.SetTrigger("Spell1");
+            actor.animator.SetTrigger("Spell2");
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
             actor.abils[2].Cast(actor);
+
+            actor.animator.SetTrigger("Spell3");
         }
 
         //	inputH = Input.GetAxis("Joystick L Trigger");

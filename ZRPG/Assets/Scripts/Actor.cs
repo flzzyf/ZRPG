@@ -5,7 +5,7 @@ using UnityEngine;
 //游戏人物
 public class Actor : MonoBehaviour
 {
-	Controller2D controller2D;
+    [HideInInspector] public Controller2D controller2D;
 
 	public GameObject gfx;
 	[HideInInspector] public Animator animator;
@@ -37,8 +37,27 @@ public class Actor : MonoBehaviour
     {
         controller2D.SetHorizontalVelocity(inputH * speed);
 
+        if (inputH != 0 &&
+            facingDir != Mathf.Sign(inputH))
+            Flip();
 
     }
+
+    #region 朝向
+
+    public bool facingRight;
+
+    public int facingDir { get { return facingRight ? 1 : -1; } }
+
+    public void Flip()
+    {
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
+
+        facingRight = !facingRight;
+    }
+    #endregion
 
     #region 生命值
 
@@ -76,8 +95,9 @@ public class Actor : MonoBehaviour
 		ModifyHp(-amount);
 	}
 
-	public virtual void Death()
+	public void Death()
 	{
+        Destroy(gameObject);
 	}
 
 	public void DieAnimEvent()
@@ -217,22 +237,28 @@ public class Actor : MonoBehaviour
 	//发动攻击
 	public void Attack()
 	{
-		Vector2 pos = (Vector2)transform.position + attackOffset * new Vector2(controller2D.facingDir, 0);
-		Collider2D[] colliders = Physics2D.OverlapCircleAll(pos, attackRadius);
-
-		foreach (var item in colliders)
-		{
-			if(item.CompareTag("Enemy"))
-			{
-				print("Hit");
-				item.GetComponent<Actor>().TakeDamage(1);
-			}
-		}
+        animator.SetTrigger("Attack");
 	}
 
-	#endregion
+    public void AttackAnimEvent()
+    {
+        Vector2 pos = (Vector2)transform.position + attackOffset * new Vector2(controller2D.facingDir, 0);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(pos, attackRadius);
 
-	private void OnDrawGizmosSelected()
+        foreach (var item in colliders)
+        {
+            if (item.CompareTag("Enemy"))
+            {
+                print("Hit");
+                item.GetComponent<Actor>().TakeDamage(1);
+            }
+        }
+    }
+
+
+    #endregion
+
+    private void OnDrawGizmosSelected()
 	{
 		ShowAttackRange();
 	}

@@ -69,8 +69,9 @@ public class AIController : MonoBehaviour
         //移动
         actor.Move(Mathf.Sign(dir.x));
 
-        if (offset.y > 1)
+        if (offset.y > 2)
             actor.Jump();
+        //(actor.controller2D.collisions.right || actor.controller2D.collisions.left)
 
         float distance = offset.magnitude;
         if(distance < nextWaypointDistance)

@@ -153,7 +153,7 @@ public class Actor : MonoBehaviour
 		else
 		{
 			//接触地面才能跳
-			if(controller2D.collisions.below)
+			if(controller2D.isOnGround)
 				controller2D.velocity.y += jumpVelocity;
 		}
 	}

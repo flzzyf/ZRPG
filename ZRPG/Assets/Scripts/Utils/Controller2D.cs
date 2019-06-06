@@ -6,14 +6,10 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class Controller2D : MonoBehaviour
 {
-	[HideInInspector]
+    [HideInInspector]
     public Vector3 velocity;
 
-    //空中地上加速度
-    float accelerationTimeAirborne = .2f;
-    float accelerationTimeGrounded = .1f;
-
-	[HideInInspector]
+    [HideInInspector]
     public float velocityXSmoothing;
 
 	//人物朝向，-1左1右
@@ -81,7 +77,9 @@ public class Controller2D : MonoBehaviour
 			velocity.y = 0;
 		}
 
-		//print("当前速度：" + velocity);
+        //print("当前速度：" + velocity);
+
+        CalculateFriction(ref velocity);
 
 		//移动
 		transform.Translate(_velocity);
@@ -375,6 +373,35 @@ public class Controller2D : MonoBehaviour
 	{
 		velocity.y += gravity * Time.deltaTime;
 	}
-	#endregion
+    #endregion
 
+    #region 空中与地面
+
+    //空中地上加速度
+    float accelerationTimeAirborne = .2f;
+    float accelerationTimeGrounded = .1f;
+
+    //空气阻力
+    public float airFriction;
+    //地面阻力
+    public float groundFriction;
+
+    //在地面上
+    public bool isOnGround { get { return collisions.below; } }
+
+    //计算阻力
+    void CalculateFriction(ref Vector3 v)
+    { 
+        if(isOnGround)
+        {
+            v.x -= Mathf.Sign(v.x) * groundFriction * Time.deltaTime;
+        }
+        else
+        {
+            v.x -= Mathf.Sign(v.x) * airFriction * Time.deltaTime;
+            v.y -= Mathf.Sign(v.y) * airFriction * Time.deltaTime;
+        }
+    }
+
+    #endregion
 }

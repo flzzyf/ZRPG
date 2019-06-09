@@ -9,14 +9,11 @@ public class Utils : MonoBehaviour
 	{
 		RaycastHit2D hit = Physics2D.Raycast(origin, dir, distance, layer);
 
-		Color color = hit ? Color.red : Color.green;
-		Debug.DrawLine(origin, origin + dir * distance, color);
+		Debug.DrawLine(origin, origin + dir * distance, Color.green);
 
-		return hit;
-	}
+        if(hit)
+            Debug.DrawLine(origin, origin + dir * hit.distance, Color.red);
 
-	public static void Push(Rigidbody2D rb, Vector2 dir, float amount)
-	{
-		rb.AddForce(dir * amount, ForceMode2D.Impulse);
+        return hit;
 	}
 }

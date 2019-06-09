@@ -4,6 +4,8 @@ using UnityEngine;
 
 //Rigidbody2D的精简版，所有物体都用到
 [RequireComponent(typeof(BoxCollider2D))]
+//在所有脚本中最后执行
+[DefaultExecutionOrder(100)]
 public class Controller2D : MonoBehaviour
 {
     [HideInInspector]
@@ -22,8 +24,6 @@ public class Controller2D : MonoBehaviour
 
 		//计算光束间距
 		CalculateRaySpacing();
-
-        //InitGravity();
     }
 
 	void Update()
@@ -279,7 +279,6 @@ public class Controller2D : MonoBehaviour
 
         //force *= transform.localScale.x;
         //forceVelocity = force;
-
     }
 
 	#region 碰撞信息
@@ -369,9 +368,9 @@ public class Controller2D : MonoBehaviour
 	public static float gravity = -20;
 
 	//计算重力
-	void UpdateGravity(ref Vector3 velocity)
+	void UpdateGravity(ref Vector3 v)
 	{
-		velocity.y += gravity * Time.deltaTime;
+		v.y += gravity * Time.deltaTime;
 	}
     #endregion
 

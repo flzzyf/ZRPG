@@ -5,17 +5,22 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 	Actor actor;
+    PlayerInput playerInput;
 
 	void Start()
     {
 		actor = GetComponent<Actor>();
+        playerInput = GetComponent<PlayerInput>();
 	}
 
-	void Update()
+	void FixedUpdate()
     {
-		float inputH = Input.GetAxisRaw("Horizontal");
         //移动
-        actor.Move(inputH);
+        //actor.Move(playerInput.horizontal);
+        //actor.rigidbodyBox.AddForce(new Vector2(playerInput.horizontal * actor.speed, 0), 
+        //ForceMode2D.Force);
+
+        actor.rigidbodyBox.movingForce = new Vector2(playerInput.horizontal, 0);
 
         //按下空格或者手柄A键
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button0))

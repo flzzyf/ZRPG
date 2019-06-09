@@ -404,26 +404,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 7542448331461718451}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b794f9e07c4b811499c73352865bc622, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ab17c8f2cf7f4208a5759d5fe47e290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  facingRight: 0
-  maxClambAngle: 60
-  maxDescendAngle: 55
-  horizontalRayCount: 4
-  verticalRayCount: 4
+  velocity: {x: 0, y: 0}
+  horizontalRayCount: 2
+  verticalRayCount: 2
   collisionMask:
     serializedVersion: 2
     m_Bits: 256
-  jumpHeight: 4
-  timeToJump: 0.4
-  canSlideWall: 0
-  wallSlideSpeedMax: 1
-  wallJumpClimb: {x: 0, y: 0}
-  wallJumpOff: {x: 0, y: 0}
-  wallLeap: {x: 0, y: 0}
-  wallStickTime: 0.25
-  wallSliding: 0
+  maxClambAngle: 60
+  maxDescendAngle: 55
 --- !u!1 &7542448331687208100
 GameObject:
   m_ObjectHideFlags: 0

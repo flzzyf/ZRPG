@@ -6,6 +6,7 @@ using UnityEngine;
 public class Actor : MonoBehaviour
 {
     [HideInInspector] public Controller2D controller2D;
+    [HideInInspector] public RigidbodyBox rigidbodyBox;
 
 	public GameObject gfx;
 	[HideInInspector] public Animator animator;
@@ -20,6 +21,7 @@ public class Actor : MonoBehaviour
 	void Start()
     {
 		controller2D = GetComponent<Controller2D>();
+        rigidbodyBox = GetComponent<RigidbodyBox>();
 		animator = gfx.GetComponent<Animator>();
 
         InitHp();
@@ -30,12 +32,13 @@ public class Actor : MonoBehaviour
 	void Update()
 	{
 		//滑墙判定
-		UpdateWallSlide();
+		//UpdateWallSlide();
 	}
 
     public void Move(float inputH)
     {
-        controller2D.SetHorizontalVelocity(inputH * speed);
+        //controller2D.SetHorizontalVelocity(inputH * speed);
+        //rigidbodyBox.velocity.x = inputH * speed;
 
         if (inputH != 0 &&
             facingDir != Mathf.Sign(inputH))
@@ -152,9 +155,11 @@ public class Actor : MonoBehaviour
 		}
 		else
 		{
-			//接触地面才能跳
-			if(controller2D.isOnGround)
-				controller2D.velocity.y += jumpVelocity;
+            //接触地面才能跳
+            //if(controller2D.isOnGround)
+            //controller2D.velocity.y += jumpVelocity;
+
+            //rigidbodyBox.AddForce(Vector2.up * jumpVelocity, ForceMode2D.Force);
 		}
 	}
 

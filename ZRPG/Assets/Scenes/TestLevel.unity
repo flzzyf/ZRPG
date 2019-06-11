@@ -681,13 +681,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocity: {x: 0, y: 0}
+  movingForce: {x: 0, y: 0}
+  gravity: -20
+  maxClambAngle: 60
+  maxDescendAngle: 55
   horizontalRayCount: 8
   verticalRayCount: 4
   collisionMask:
     serializedVersion: 2
     m_Bits: 256
-  maxClambAngle: 60
-  maxDescendAngle: 55
   airFriction: 0.1
   groundFriction: 0.2
 --- !u!61 &66704048
@@ -744,7 +746,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15746cf4d1ee42b498759e7774d09b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller2D: {fileID: 0}
   rigidbodyBox: {fileID: 0}
   gfx: {fileID: 139655687}
   animator: {fileID: 0}
@@ -4244,7 +4245,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15746cf4d1ee42b498759e7774d09b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller2D: {fileID: 0}
   rigidbodyBox: {fileID: 0}
   gfx: {fileID: 0}
   animator: {fileID: 0}
@@ -5320,29 +5320,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1301316571 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5238749183112424671, guid: a48396dd8ea45483fab7d000bfd2f56a,
-    type: 3}
-  m_PrefabInstance: {fileID: 5238749183552516758}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1301316576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1301316571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 881019c5dee3b4e45976d7f552db0000, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  horizontalRayCount: 4
-  verticalRayCount: 4
-  collisionMask:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!1 &1395676589
 GameObject:
   m_ObjectHideFlags: 0
@@ -7174,6 +7151,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dummy
       objectReference: {fileID: 0}
+    - target: {fileID: 5238749183112424671, guid: a48396dd8ea45483fab7d000bfd2f56a,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 5238749183112424667, guid: a48396dd8ea45483fab7d000bfd2f56a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7237,7 +7219,12 @@ PrefabInstance:
     - target: {fileID: 5238749183112424668, guid: a48396dd8ea45483fab7d000bfd2f56a,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5238749183112424668, guid: a48396dd8ea45483fab7d000bfd2f56a,
+        type: 3}
+      propertyPath: hpMax
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 5238749182881554452, guid: a48396dd8ea45483fab7d000bfd2f56a,
         type: 3}

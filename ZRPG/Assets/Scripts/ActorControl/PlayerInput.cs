@@ -6,11 +6,27 @@ using UnityEngine;
 [DefaultExecutionOrder(-100)]
 public class PlayerInput : MonoBehaviour
 {
+    void FixedUpdate()
+    {
+        readyToClearInput = true;
+    }
+
+    void Update()
+    {
+        if(readyToClearInput)
+        {
+            readyToClearInput = false;
+            ClearInput();
+        }
+
+        ProcessInput();
+    }
+
     #region 操作
     [HideInInspector] public float horizontal;
     [HideInInspector] public bool jumpPressed;
     [HideInInspector] public bool jumpHeld;
-	[HideInInspector] public bool attackPressed;
+    [HideInInspector] public bool attackPressed;
     //准备重置输入
     bool readyToClearInput;
 
@@ -18,9 +34,9 @@ public class PlayerInput : MonoBehaviour
     {
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        jumpPressed = jumpPressed || Input.GetButtonDown("Jump");
+        jumpPressed = jumpPressed || Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.Joystick1Button0);
         jumpHeld = jumpHeld || Input.GetButton("Jump");
-		attackPressed = Input.GetButtonDown("Fire1");
+        attackPressed = Input.GetButtonDown("Fire1");
     }
 
     void ClearInput()
@@ -32,22 +48,4 @@ public class PlayerInput : MonoBehaviour
     }
 
     #endregion
-
-    void Update()
-    {
-        if(readyToClearInput)
-        {
-            readyToClearInput = false;
-
-            ClearInput();
-        }
-
-        ProcessInput();
-    }
-
-    void FixedUpdate()
-    {
-        readyToClearInput = true;
-    }
-
 }

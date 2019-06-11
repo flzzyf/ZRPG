@@ -5,31 +5,26 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 	Actor actor;
-    PlayerInput playerInput;
+    PlayerInput input;
 
 	void Start()
     {
 		actor = GetComponent<Actor>();
-        playerInput = GetComponent<PlayerInput>();
+        input = GetComponent<PlayerInput>();
 	}
 
 	void FixedUpdate()
     {
         //移动
-        //actor.Move(playerInput.horizontal);
-        //actor.rigidbodyBox.AddForce(new Vector2(playerInput.horizontal * actor.speed, 0), 
-        //ForceMode2D.Force);
+        actor.Move(input.horizontal);
 
-        actor.rigidbodyBox.movingForce = new Vector2(playerInput.horizontal, 0);
+        if(input.jumpPressed)
+        {
+            actor.Jump();
+        }
 
-        //按下空格或者手柄A键
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button0))
-		{
-			actor.Jump();
-		}
-
-		//松开空格，停止跳跃
-		if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.Joystick1Button0))
+        //松开空格，停止跳跃
+        if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.Joystick1Button0))
 		{
 			actor.JumpCancel();
 		}

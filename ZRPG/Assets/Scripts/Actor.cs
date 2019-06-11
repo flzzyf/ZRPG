@@ -5,7 +5,6 @@ using UnityEngine;
 //游戏人物
 public class Actor : MonoBehaviour
 {
-    [HideInInspector] public Controller2D controller2D;
     [HideInInspector] public RigidbodyBox rigidbodyBox;
 
 	public GameObject gfx;
@@ -20,7 +19,6 @@ public class Actor : MonoBehaviour
 
 	void Start()
     {
-		controller2D = GetComponent<Controller2D>();
         rigidbodyBox = GetComponent<RigidbodyBox>();
 		animator = gfx.GetComponent<Animator>();
 
@@ -32,13 +30,12 @@ public class Actor : MonoBehaviour
 	void Update()
 	{
 		//滑墙判定
-		//UpdateWallSlide();
+		UpdateWallSlide();
 	}
 
     public void Move(float inputH)
     {
-        //controller2D.SetHorizontalVelocity(inputH * speed);
-        //rigidbodyBox.velocity.x = inputH * speed;
+        rigidbodyBox.movingForce.x = inputH * speed;
 
         if (inputH != 0 &&
             facingDir != Mathf.Sign(inputH))
@@ -122,12 +119,12 @@ public class Actor : MonoBehaviour
 	float jumpVelocity;
 	float jumpVelocityMin;
 
-
 	//根据跳跃高度和时间换算出跳跃初速度
 	void InitJumpVelocity()
 	{
-		jumpVelocity = (jumpHeight - 0.5f * Controller2D.gravity * timeToJump * timeToJump) / timeToJump;
-		jumpVelocityMin = (jumpHeightMin - 0.5f * Controller2D.gravity * timeToJump * timeToJump) / timeToJump;
+		jumpVelocity = (jumpHeight - 0.5f * rigidbodyBox.gravity * timeToJump * timeToJump) / timeToJump;
+
+		jumpVelocityMin = (jumpHeightMin - 0.5f * rigidbodyBox.gravity * timeToJump * timeToJump) / timeToJump;
 	}
 
 	public void Jump()
@@ -135,38 +132,42 @@ public class Actor : MonoBehaviour
 		if (wallSliding)
 		{
 			float inputH = Input.GetAxisRaw("Horizontal");
-			int wallDir = (controller2D.collisions.left) ? -1 : 1;
+			int wallDir = (rigidbodyBox.collisions.left) ? -1 : 1;
 
 			if (wallDir == inputH)  //按朝着墙的方向
 			{
-				controller2D.velocity.x = -wallDir * wallJumpClimb.x;
-				controller2D.velocity.y = wallJumpClimb.y;
+				rigidbodyBox.velocity.x = -wallDir * wallJumpClimb.x;
+				rigidbodyBox.velocity.y = wallJumpClimb.y;
 			}
 			else if (inputH == 0)   //不按方向键
 			{
-				controller2D.velocity.x = -wallDir * wallJumpOff.x;
-				controller2D.velocity.y = wallJumpOff.y;
+				rigidbodyBox.velocity.x = -wallDir * wallJumpOff.x;
+				rigidbodyBox.velocity.y = wallJumpOff.y;
 			}
 			else   //按和墙反方向键
 			{
-				controller2D.velocity.x = -wallDir * wallLeap.x;
-				controller2D.velocity.y = wallLeap.y;
+				rigidbodyBox.velocity.x = -wallDir * wallLeap.x;
+				rigidbodyBox.velocity.y = wallLeap.y;
 			}
 		}
 		else
 		{
             //接触地面才能跳
-            //if(controller2D.isOnGround)
-            //controller2D.velocity.y += jumpVelocity;
+            //if(rigidbodyBox.isOnGround)
+            //rigidbodyBox.velocity.y += jumpVelocity;
 
-            //rigidbodyBox.AddForce(Vector2.up * jumpVelocity, ForceMode2D.Force);
-		}
+            if(rigidbodyBox.isOnGround)
+                rigidbodyBox.AddForce(Vector2.up * jumpVelocity);
+
+            //rigidbodyBox.movingForce.y = jumpVelocity;
+
+        }
 	}
 
 	//松开空格，停止跳跃
 	public void JumpCancel()
 	{
-		controller2D.velocity.y = Mathf.Min(controller2D.velocity.y, jumpVelocityMin);
+		//rigidbodyBox.velocity.y = Mathf.Min(rigidbodyBox.velocity.y, jumpVelocityMin);
 	}
 
 	#endregion
@@ -192,24 +193,24 @@ public class Actor : MonoBehaviour
 	{
 		if (canSlideWall)
 		{
-			int wallDir = (controller2D.collisions.left) ? -1 : 1;
+			int wallDir = (rigidbodyBox.collisions.left) ? -1 : 1;
 
 			wallSliding = false;
-			if ((controller2D.collisions.left || controller2D.collisions.right) && !controller2D.collisions.below)
+			if ((rigidbodyBox.collisions.left || rigidbodyBox.collisions.right) && !rigidbodyBox.collisions.below)
 			{
 				wallSliding = true;
 
 				//jumpCount = unit.jumpCountMax;
 
 				//滑墙时下落速度限制
-				controller2D.velocity.y = Mathf.Max(controller2D.velocity.y, -wallSlideSpeedMax);
+				rigidbodyBox.velocity.y = Mathf.Max(rigidbodyBox.velocity.y, -wallSlideSpeedMax);
 
 				if (timeToWallUnstick > 0)
 				{
-					controller2D.velocityXSmoothing = 0;
-					controller2D.velocity.x = 0;
+					//rigidbodyBox.velocityXSmoothing = 0;
+					rigidbodyBox.velocity.x = 0;
 
-					if (Mathf.Sign(controller2D.velocity.x) != wallDir && controller2D.velocity.x != 0)
+					if (Mathf.Sign(rigidbodyBox.velocity.x) != wallDir && rigidbodyBox.velocity.x != 0)
 					{
 						timeToWallUnstick -= Time.deltaTime;
 
@@ -247,7 +248,7 @@ public class Actor : MonoBehaviour
 
     public void AttackAnimEvent()
     {
-        Vector2 pos = (Vector2)transform.position + attackOffset * new Vector2(controller2D.facingDir, 0);
+        Vector2 pos = (Vector2)transform.position + attackOffset * new Vector2(facingDir, 0);
         Collider2D[] colliders = Physics2D.OverlapCircleAll(pos, attackRadius);
 
         foreach (var item in colliders)

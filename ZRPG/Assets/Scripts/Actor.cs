@@ -35,6 +35,10 @@ public class Actor : MonoBehaviour
 
     public void Move(float inputH)
     {
+        //播放移动动画
+        animator.SetFloat("Speed", Mathf.Abs(inputH));
+
+        //设置移动
         rigidbodyBox.movingForce.x = inputH * speed;
 
         if (inputH != 0 &&
@@ -153,21 +157,17 @@ public class Actor : MonoBehaviour
 		else
 		{
             //接触地面才能跳
-            //if(rigidbodyBox.isOnGround)
-            //rigidbodyBox.velocity.y += jumpVelocity;
-
             if(rigidbodyBox.isOnGround)
+            {
                 rigidbodyBox.AddForce(Vector2.up * jumpVelocity);
-
-            //rigidbodyBox.movingForce.y = jumpVelocity;
-
+            }
         }
 	}
 
 	//松开空格，停止跳跃
 	public void JumpCancel()
 	{
-		//rigidbodyBox.velocity.y = Mathf.Min(rigidbodyBox.velocity.y, jumpVelocityMin);
+		rigidbodyBox.velocity.y = Mathf.Min(rigidbodyBox.velocity.y, jumpVelocityMin);
 	}
 
 	#endregion

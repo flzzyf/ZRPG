@@ -1,0 +1,18 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# https://www.codeandweb.com/texturepacker/unity
+#
+# $TexturePacker:SmartUpdate:9ddf4c4d819e3c9e08d27cfa89db268f:56437ea1bf0bd7dadadbcbb40590a908:70c5c5ff8064868ee24c3856f14a6a50$
+#
+:format=40300
+:texture=Man_Hit.png
+:size=32x128
+:pivotpoints=enabled
+:borders=disabled
+
+受击 (4);1;87;28;40; 0.6607142857142857;-0.02499999999999991; 0;0;0;0; 3;28;1;0;0;20;40; 1;0;1;2
+受击 (5);1;46;26;39; 0.8269230769230769;-0.05128205128205132; 0;0;0;0; 3;26;0;0;0;19;39; 1;0;1;2
+受击 (6);1;6;26;38; 0.9423076923076923;-0.026315789473684292; 0;0;0;0; 3;26;1;0;0;19;38; 1;0;1;2
+受击 (7);1;46;26;39; 0.8269230769230769;-0.05128205128205132; 0;0;0;0; 3;26;0;0;0;19;39; 1;0;1;2

@@ -18,22 +18,25 @@ public class PlayerController : MonoBehaviour
         //移动
         actor.Move(input.horizontal);
 
+        //按下跳跃
         if(input.jumpPressed)
         {
             actor.Jump();
         }
 
-        //松开空格，停止跳跃
-        if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.Joystick1Button0))
+        //松开跳跃键
+        if (input.jumpReleased)
 		{
 			actor.JumpCancel();
 		}
 
-		if(Input.GetButtonDown("Fire1"))
+        //按下攻击键
+		if(input.attackPressed)
 		{
 			actor.Attack();
 		}
 
+        //按下QWE
         if (Input.GetKeyDown(KeyCode.Q))
         {
             actor.abils[0].Cast(actor);
@@ -55,14 +58,5 @@ public class PlayerController : MonoBehaviour
             actor.animator.SetTrigger("Spell3");
         }
 
-        //	inputH = Input.GetAxis("Joystick L Trigger");
-        //if (inputH != 0)
-        //	print(inputH);
-
-        ////手柄按下菜单键
-        //if(Input.GetKeyUp(KeyCode.Joystick1Button11))
-        //{
-
-        //}
     }
 }

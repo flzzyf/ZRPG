@@ -45,7 +45,7 @@ public class AIController : MonoBehaviour
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
         if (target == null)
             return;
@@ -69,7 +69,7 @@ public class AIController : MonoBehaviour
         //移动
         actor.Move(Mathf.Sign(dir.x));
 
-        if (offset.y > 2)
+        if (offset.y > 1.5f)
             actor.Jump();
         //(actor.controller2D.collisions.right || actor.controller2D.collisions.left)
 

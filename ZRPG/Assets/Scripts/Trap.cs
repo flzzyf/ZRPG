@@ -42,6 +42,8 @@ public class Trap : MonoBehaviour
 
 		animator.SetTrigger("Trigger");
 
-		actor.TakeDamage(damage);
+        actor.Stun(.7f);
+        actor.TakeDamage(damage);
+
 	}
 }

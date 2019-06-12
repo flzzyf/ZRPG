@@ -35,6 +35,14 @@ public class Actor : MonoBehaviour
 
     public void Move(float inputH)
     {
+        if (isStuned)
+        {
+            rigidbodyBox.movingForce.x = 0;
+            animator.SetFloat("Speed", 0);
+
+            return;
+        }
+
         //播放移动动画
         animator.SetFloat("Speed", Mathf.Abs(inputH));
 
@@ -101,18 +109,23 @@ public class Actor : MonoBehaviour
 
 	public void Death()
 	{
-        Destroy(gameObject);
-	}
+        //Destroy(gameObject);
+
+        gameObject.SetActive(false);
+
+        BattleManager.instance.StartCoroutine(BattleManager.instance.Respawn(this));
+    }
 
 	public void DieAnimEvent()
 	{
 		Destroy(gameObject);
 	}
-	#endregion
 
-	#region 跳跃
+    #endregion
 
-	[Header("跳跃参数")]
+    #region 跳跃
+
+    [Header("跳跃参数")]
 	//跳跃高度和跳跃时间
 	public float jumpHeight = 4;
 	public float timeToJump = .4f;
@@ -133,7 +146,10 @@ public class Actor : MonoBehaviour
 
 	public void Jump()
 	{
-		if (wallSliding)
+        if (isStuned)
+            return;
+
+        if (wallSliding)
 		{
 			float inputH = Input.GetAxisRaw("Horizontal");
 			int wallDir = (rigidbodyBox.collisions.left) ? -1 : 1;
@@ -255,12 +271,46 @@ public class Actor : MonoBehaviour
         {
             if (item.CompareTag("Enemy"))
             {
-                print("Hit");
                 item.GetComponent<Actor>().TakeDamage(1);
+
+                //施力
+                Vector2 force = new Vector2(facingDir, .5f) * 5;
+                item.GetComponent<RigidbodyBox>().AddForce(force);
+
+                item.GetComponent<Actor>().Stun(.7f);
+
             }
         }
     }
 
+
+    #endregion
+
+    #region 昏迷状态
+
+    //处于无法控制状态
+    public bool isStuned;
+
+    float currentStunTime;
+
+    //昏迷几秒
+    public void Stun(float duration)
+    {
+        currentStunTime = Mathf.Max(currentStunTime, duration);
+
+        StopCoroutine(StunTimeCounter(0));
+        StartCoroutine(StunTimeCounter(duration));
+    }
+
+    //昏迷时间计时器
+    IEnumerator StunTimeCounter(float duration)
+    {
+        isStuned = true;
+
+        yield return new WaitForSeconds(duration);
+
+        isStuned = false;
+    }
 
     #endregion
 

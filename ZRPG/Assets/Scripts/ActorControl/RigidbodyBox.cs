@@ -18,6 +18,9 @@ public class RigidbodyBox : MonoBehaviour
 
     public bool isOnGround { get { return collisions.below; } }
 
+    //默认面向右边
+    int facingDir = 1;
+
     void Start()
     {
         boxCollider = GetComponent<BoxCollider2D>();
@@ -43,11 +46,13 @@ public class RigidbodyBox : MonoBehaviour
         if ((collisions.below && v.y < 0) || (collisions.above))
             velocity.y = 0;
 
+        //摩擦力，只计算在在这之前的力
+        CalculateFriction(ref v);
+
         //施加重力
         v.y += gravity * Time.fixedDeltaTime;
 
-        //摩擦力
-        //CalculateFriction(ref v);
+
     }
 
     //对该物体施加它身上的力
@@ -65,7 +70,7 @@ public class RigidbodyBox : MonoBehaviour
             DescendSlope(ref v);
 
         //水平碰撞判定（为了爬墙，即便是0也判断）
-        if(v.x != 0)
+        //if(v.x != 0)
         HorizontalCollisions(ref v);
 
         //竖直射线判定，判定当前移动方向上有没有被阻挡
@@ -78,8 +83,11 @@ public class RigidbodyBox : MonoBehaviour
     //水平碰撞判定
     void HorizontalCollisions(ref Vector2 v)
     {
+        if(v.x != 0)
+        facingDir = v.x > 0 ? 1 : -1;
+
         //速度正负方向
-        float directionX = Mathf.Sign(v.x);
+        float directionX = facingDir;
         //光束长度
         float rayLength = Mathf.Abs(v.x) + skinWidth;
 
@@ -330,8 +338,6 @@ public class RigidbodyBox : MonoBehaviour
     }
 
     #endregion
-
-
 
     public void AddForce(Vector2 force)
     {

@@ -9,14 +9,6 @@ public class AIController : MonoBehaviour
 
     public Actor target;
 
-    //距离路径点多远算到达
-    public float nextWaypointDistance = 1;
-
-    Path path;
-    int currentWaypointIndex;
-    bool reachedEndOfPath;
-    Seeker seeker;
-
     void Start()
     {
         actor = GetComponent<Actor>();
@@ -24,26 +16,6 @@ public class AIController : MonoBehaviour
 
         InvokeRepeating("FindPath", 0f, .5f);
     }
-
-    void FindPath()
-    {
-        if (!seeker.IsDone())
-            return;
-
-        seeker.StartPath(transform.position, target.transform.position + Vector3.up * .5f, HandleOnPathDelegate);
-    }
-
-    void HandleOnPathDelegate(Path p)
-    {
-        if(!p.error)
-        {
-            path = p;
-            currentWaypointIndex = 0;
-
-            reachedEndOfPath = false;
-        }
-    }
-
 
     void FixedUpdate()
     {
@@ -79,4 +51,38 @@ public class AIController : MonoBehaviour
             currentWaypointIndex++;
         }
     }
+
+    #region 寻路
+
+    //距离路径点多远算到达
+    public float nextWaypointDistance = 1;
+
+    Path path;
+    int currentWaypointIndex;
+    bool reachedEndOfPath;
+    Seeker seeker;
+
+    void FindPath()
+    {
+        if (target == null)
+            return;
+
+        if (!seeker.IsDone())
+            return;
+
+        seeker.StartPath(transform.position, target.transform.position + Vector3.up * .5f, HandleOnPathDelegate);
+    }
+
+    void HandleOnPathDelegate(Path p)
+    {
+        if (!p.error)
+        {
+            path = p;
+            currentWaypointIndex = 0;
+
+            reachedEndOfPath = false;
+        }
+    }
+
+    #endregion
 }

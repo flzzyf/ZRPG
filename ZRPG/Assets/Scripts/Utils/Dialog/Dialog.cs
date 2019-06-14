@@ -15,6 +15,7 @@ public class Sentence
 
     public Content[] contents;
 }
+
 [System.Serializable]
 public class Content
 {

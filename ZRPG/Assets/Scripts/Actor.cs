@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 //游戏人物
 public class Actor : MonoBehaviour
@@ -17,7 +18,7 @@ public class Actor : MonoBehaviour
 
     public List<Abil> abils;
 
-	void Start()
+    void Start()
     {
         rigidbodyBox = GetComponent<RigidbodyBox>();
 		animator = gfx.GetComponent<Animator>();
@@ -25,6 +26,9 @@ public class Actor : MonoBehaviour
         InitHp();
 
 		InitJumpVelocity();
+
+        //初始化动画事件
+        animEvent = new UnityEvent();
     }
 
 	void Update()
@@ -260,6 +264,9 @@ public class Actor : MonoBehaviour
 	public void Attack()
 	{
         animator.SetTrigger("Attack");
+
+        animEvent.RemoveAllListeners();
+        animEvent.AddListener(AttackAnimEvent);
 	}
 
     public void AttackAnimEvent()
@@ -310,6 +317,19 @@ public class Actor : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
         isStuned = false;
+    }
+
+    #endregion
+
+    #region 动画事件
+
+    //动画触发事件
+    UnityEvent animEvent;
+
+    //触发动画事件
+    public void TriggerAnimEvent()
+    {
+        animEvent.Invoke();
     }
 
     #endregion
